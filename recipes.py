@@ -21,3 +21,28 @@ ttk.Button(frm, text="Execute").grid(column=1, row=3)
 ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=4)
 
 root.mainloop()
+
+
+
+# Dokimastikh klash "Recipe"
+
+class Recipe:
+    def __init__(self, name, category, difficulty, time, ingredients, steps):
+        self.name = name
+        self.category = category
+        self.difficulty = difficulty
+        self.time = time
+        self.ingredients = ingredients
+        self.steps = steps
+
+
+def filter_by_category(recipes, category):
+    filtered = []
+    for i in recipes:
+        if i.category == category:
+            filtered.append(i)
+    return filtered
+
+recipes = []
+
+gemista = Recipe(name="Μακαρόνια με κιμά", category="Ζυμαρικά", difficulty="", time="", ingredients="", steps="")
