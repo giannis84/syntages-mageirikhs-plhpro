@@ -37,18 +37,18 @@ def main():
 			ttk.Label(self, text = 'another label').pack(expand = True)
 
 
-	class Submit(tk.Toplevel):
-		def __init__(self):
-			super().__init__()
-			self.title('Submit')
-			# self.geometry('300x400')
-			self.columnconfigure(0)
-			self.columnconfigure(1)
-			ttk.Label(self, text = 'A label').pack()
-			ttk.Button(self, text = '2').pack()
-			# ttk.Label(self, text = f'{Spaghetti_meatballs.name}').pack(expand = True)
-			ttk.Label(self, text='Name of the recipe').pack()
-			ttk.Entry().grid(column=1, row=3)
+	# class Submit(tk.Toplevel):
+	# 	def __init__(self):
+	# 		super().__init__()
+	# 		self.title('Submit')
+	# 		# self.geometry('300x400')
+	# 		self.columnconfigure(0)
+	# 		self.columnconfigure(1)
+	# 		ttk.Label(self, text = 'A label').pack()
+	# 		ttk.Button(self, text = '2').pack()
+	# 		# ttk.Label(self, text = f'{Spaghetti_meatballs.name}').pack(expand = True)
+	# 		ttk.Label(self, text='Name of the recipe').pack()
+	# 		ttk.Entry().grid(column=1, row=3)
 
 	class Modify(tk.Toplevel):
 		def __init__(self):
@@ -73,9 +73,9 @@ def main():
 		global extra_window
 		extra_window = Search()
 
-	def create_window_Submit():
-		global extra_window
-		extra_window = Submit()
+	# def create_window_Submit():
+	# 	global extra_window
+	# 	extra_window = Submit()
 
 	def create_window_modify():
 		global extra_window
@@ -87,8 +87,7 @@ def main():
 		
 
 	root = tk.Tk()
-	# root = tk()
-	root.title("New")
+	root.title("Recipes")
 	frm = ttk.Frame(root, padding=30)
 	frm.grid()
 
@@ -100,8 +99,35 @@ def main():
 
 
 
+	# Δευτερεύοντα παράθυρα
+
+	def window_submit():
+
+		def save_text():
+			user_input = entry.get()  # Get the text from entry
+			print(f"Saving recipe: {user_input}")
+
+		new_window = tk.Toplevel(root)
+		new_window.title("Submit Recipe")
+		new_window.geometry("300x150")
+		
+		label = tk.Label(new_window, text="Name:")
+		label.pack(pady=5)
+		
+		entry = tk.Entry(new_window)
+		entry.pack(pady=5)
+
+		save_button = tk.Button(new_window, text="Save", command=save_text)
+		save_button.pack(pady=5)
+		
+		close_button = tk.Button(new_window, text="Close", command=new_window.destroy)
+		close_button.pack(pady=5)
+
+
+	# Κύριο παράθυρο
+
 	ttk.Label(frm, text="Submit Recipe").grid(column=0, row=1)
-	ttk.Button(frm, text="Submit",command = create_window_Submit).grid(column=1, row=1)
+	ttk.Button(frm, text="Submit",command = window_submit).grid(column=1, row=1)
 
 	ttk.Label(frm, text="Modify Recipe").grid(column=0, row=2)
 	ttk.Button(frm, text="Modify",command = create_window_modify).grid(column=1, row=2)
