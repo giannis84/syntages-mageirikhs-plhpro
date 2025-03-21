@@ -1,32 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-import uuid
-
-# Test data for development and a class for the recipes
-class Recipe:
-	def __init__(self, name="", category="", difficulty="", time="", ingredients="", steps=""):
-		'''Αρχικοποίση της συνταγής'''
-		self.id = uuid.uuid4() # Μοναδικό πρωτεύον κλειδί για χρήση στην βάση δεδομένων
-		self.name = name
-		self.category = category
-		self.difficulty = difficulty
-		self.time = time
-		self.ingredients = ingredients
-		self.steps = steps
-
-
-def filter_by_category(recipes, category):
-	'''Η συνάρτηση αυτή δεν είναι ακόμη έτοιμη'''
-	filtered = []
-	for i in recipes:
-		if i.category == category:
-			filtered.append(i)
-	return filtered
-
-recipes = [] # Λίστα όπου θα τοποθετηθούν αντικείμενα της κλάσης "Recipe"
-
-# Παράδειγμα συνταγής:
-Spaghetti_meatballs = Recipe(name="Μακαρόνια με κιμά", category="Ζυμαρικά", difficulty="", time="", ingredients="", steps="")
+import handle_data
 
 
 # Main Function
@@ -104,11 +78,11 @@ def main():
 			'''Συνάρτηση ορισμού του παραθύρου "Submit recipe"'''
 			def save_text():
 				'''Εντολή αποθήκευσης σε αντικείμενο της κλάσης Recipe'''
-				new_recipe = Recipe()
 				name = entry1.get()
 				category = entry2.get()
-				new_recipe = Recipe(name=name, category=category)
-				print(f"Saved new recipe: {new_recipe.name} with id: {new_recipe.id}")
+				new_recipe = handle_data.Recipe(name=name, category=category)
+				handle_data.recipes.append(new_recipe)
+				print(f"Saved new recipe: {new_recipe.name} in category: {new_recipe.category} and id: {new_recipe.id}. Number of recipes: {len(handle_data.recipes)}")
 
 			this_window = tk.Toplevel(root) # Κατασκευή Toplevel widget που έχει ως parent το root widget (κυρίως παράθυρο)
 			this_window.title("Submit recipe details")
@@ -123,7 +97,7 @@ def main():
 			
 			frame2 = tk.Frame(this_window)
 			frame2.pack(pady=5)
-			label2 = tk.Label(frame2, text="Difficulty:")
+			label2 = tk.Label(frame2, text="Category:")
 			label2.pack(side=tk.LEFT, padx=20)
 			entry2 = tk.Entry(frame2)
 			entry2.pack(side=tk.RIGHT)
