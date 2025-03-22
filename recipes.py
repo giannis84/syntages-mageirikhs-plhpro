@@ -74,7 +74,7 @@ def main():
 	frm.grid()
 
 	# Δευτερεύοντα παράθυρα μπορούν να δημιουργηθούν απευθείας με συναρτήσεις αντί να ορίζουμε κλάσεις όπως πιο πριν
-	def window_submit():
+	def create_window_submit():
 			'''Συνάρτηση ορισμού του παραθύρου "Submit recipe"'''
 			def save_text():
 				'''Εντολή αποθήκευσης σε αντικείμενο της κλάσης Recipe'''
@@ -112,7 +112,7 @@ def main():
 	# Κύριο παράθυρο
 
 	ttk.Label(frm, text="Submit Recipe").grid(column=0, row=1)
-	ttk.Button(frm, text="Submit",command = window_submit).grid(column=1, row=1)
+	ttk.Button(frm, text="Submit",command = create_window_submit).grid(column=1, row=1)
 
 	ttk.Label(frm, text="Modify Recipe").grid(column=0, row=2)
 	ttk.Button(frm, text="Modify",command = create_window_modify).grid(column=1, row=2)
