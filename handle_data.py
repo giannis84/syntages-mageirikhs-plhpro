@@ -17,11 +17,18 @@ class Recipe:
 		self.ingredients = ingredients
 		self.steps = steps
 
+import time
+vhmata = {
+	"1": {"vhma": "Vrazoume to nero...", "xronos": time.time()},
+	"2": {"vhma": "kimas...", "xronos": time.time()}
+}
 
 def filter_by_category(recipes, category):
 	'''Η συνάρτηση αυτή δεν είναι ακόμη έτοιμη'''
-	filtered = []
-	for i in recipes:
-		if i.category == category:
-			filtered.append(i)
-	return filtered
+	# ΠΡΕΠΕΙ ΝΑ ΞΑΝΑΓΡΑΦΤΕΙ ΜΕ SQLITE!!
+	# ΘΑ ΚΑΛΟΥΜΕ ΤΗΝ ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ ΓΙΑ ΝΑ ΒΡΕΙ ΤΙΣ ΣΥΝΓΑΓΕΣ
+	# filtered = []
+	# for i in recipes:
+	# 	if i.category == category:
+	# 		filtered.append(i)
+	# return filtered

@@ -1,3 +1,4 @@
+from tkinter import *
 import tkinter as tk
 from tkinter import ttk
 import handle_data
@@ -79,11 +80,12 @@ def main():
 			
 			def save_text():
 				'''Εντολή αποθήκευσης σε αντικείμενο της κλάσης Recipe'''
-				name = entry1.get()
-				category = entry2.get()
-				new_recipe = handle_data.Recipe(name=name, category=category)
+				names = entry1.get()
+				categories = entry2.get()
+				difficulties = entry3.get()
+				new_recipe = handle_data.Recipe(name=names, category=categories, difficulty=difficulties)
 				handle_data.recipes.append(new_recipe)
-				print(f"Saved new recipe: {new_recipe.name} in category: {new_recipe.category} and id: {new_recipe.id}. Number of recipes: {len(handle_data.recipes)}")
+				print(f"Saved new recipe: {new_recipe.name} in category: {new_recipe.category}, difficulty: {new_recipe.difficulty} and id: {new_recipe.id}. Number of recipes: {len(handle_data.recipes)}")
 
 			this_window = tk.Toplevel(root) # Κατασκευή Toplevel widget που έχει ως parent το root widget (κυρίως παράθυρο)
 			this_window.title("Submit recipe details")
@@ -102,6 +104,14 @@ def main():
 			label2.pack(side=tk.LEFT, padx=20)
 			entry2 = tk.Entry(frame2)
 			entry2.pack(side=tk.RIGHT)
+			
+			difficulty_options = ["Easy", "Medium", "Hard"]
+			frame3 = tk.Frame(this_window)
+			frame3.pack(pady=5)
+			label3 = tk.Label(frame3, text="Difficulty:")
+			label3.pack(side=tk.LEFT, padx=20)
+			entry3 = ttk.Combobox(frame3, values=difficulty_options)
+			entry3.pack(side=tk.RIGHT)
 			
 			save_button = tk.Button(this_window, text="Save", command=save_text)
 			save_button.pack(pady=15)
