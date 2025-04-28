@@ -1,8 +1,7 @@
-import uuid, sqlite3
+import uuid, sqlite3, os
+import definitions as defs
 
-recipes = [] # Λίστα όπου θα τοποθετηθούν αντικείμενα της κλάσης "Recipe"
 
-# Test data for development and a class for the recipes
 class Recipe:
 	def __init__(self, name="", category="", difficulty="", time="", ingredients="", steps=""):
 		'''
@@ -17,18 +16,18 @@ class Recipe:
 		self.ingredients = ingredients
 		self.steps = steps
 
-import time
-vhmata = {
-	"1": {"vhma": "Vrazoume to nero...", "xronos": time.time()},
-	"2": {"vhma": "kimas...", "xronos": time.time()}
-}
+# import time
+# vhmata = {
+# 	"1": {"vhma": "Vrazoume to nero...", "xronos": time.time()},
+# 	"2": {"vhma": "kimas...", "xronos": time.time()}
+# }
 
-def save_recipe_to_db(recipe, db_name="recipes.db"):
-    # Connect to the SQLite database
-    conn = sqlite3.connect(db_name)
+def save_recipe_to_db(recipe):
+    '''Αποθήκευση συνταγής'''
+    # Σύνδεση στην βάση
+    conn = sqlite3.connect(defs.DATABASE)
     cursor = conn.cursor()
-
-    # Make sure the table exists
+    # Αρχικοποίηση TABLE εάν δεν υπάρχει
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS recipes (
             id TEXT PRIMARY KEY,
@@ -40,35 +39,32 @@ def save_recipe_to_db(recipe, db_name="recipes.db"):
             steps TEXT
         )
     ''')
-
-    # Insert the recipe
+    # Εισαγωγή συνταγής
     cursor.execute('''
         INSERT INTO recipes (id, name, category, difficulty, time, ingredients, steps)
         VALUES (?, ?, ?, ?, ?, ?, ?)
     ''', (str(recipe.id), recipe.name, recipe.category, recipe.difficulty, recipe.time, recipe.ingredients, recipe.steps))
-
-    # Commit and close
     conn.commit()
     conn.close()
 
-def show_all_recipes(db_name="recipes.db"):
-    # Connect to the database
+def show_all_recipes():
+    db_name = defs.DATABASE
+    '''Εκτύπωση όλων των συνταγών (για debugging)'''
+    if not os.path.exists(db_name):
+        print(f"Database file '{db_name}' does not exist.")
+        return
+    # Σύνδεση στην βάση
     conn = sqlite3.connect(db_name)
     cursor = conn.cursor()
-
-    # Select all recipes
-    cursor.execute('SELECT id, name, category FROM recipes')
+    cursor.execute('SELECT id, name, category, difficulty FROM recipes') # SELECT όλων των συνταγών
     recipes = cursor.fetchall()
-
-    # Print each recipe
     if recipes:
         print("Recipes in database:")
         for recipe in recipes:
-            print(f"ID: {recipe[0]}, Name: {recipe[1]}, Category: {recipe[2]}")
+            # print(f"ID: {recipe[0]}, Name: {recipe[1]}, Category: {recipe[2]}, Difficulty: {recipe}")
+            print(recipe)
     else:
         print("No recipes found.")
-
-    # Close the connection
     conn.close()
 
 
