@@ -72,8 +72,3 @@ def filter_by_category(recipes, category):
 	'''Η συνάρτηση αυτή δεν είναι ακόμη έτοιμη'''
 	# ΠΡΕΠΕΙ ΝΑ ΞΑΝΑΓΡΑΦΤΕΙ ΜΕ SQLITE!!
 	# ΘΑ ΚΑΛΟΥΜΕ ΤΗΝ ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ ΓΙΑ ΝΑ ΒΡΕΙ ΤΙΣ ΣΥΝΓΑΓΕΣ
-	# filtered = []
-	# for i in recipes:
-	# 	if i.category == category:
-	# 		filtered.append(i)
-	# return filtered
