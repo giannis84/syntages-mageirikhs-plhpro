@@ -1,7 +1,7 @@
 import uuid, sqlite3, os
 import definitions as defs
 
-
+# Κλάση Recipe - ορισμός συνταγής
 class Recipe:
 	def __init__(self, id="", name="", category="", difficulty="", time="", ingredients="", steps=""):
 		'''
@@ -20,6 +20,9 @@ def get_id(id):
      if id == "":
         id = uuid.uuid4()
      return id
+
+
+# Κώδικας Βάσης Δεδομένων
 
 def save_recipe_to_db(recipe):
     '''Αποθήκευση συνταγής'''
@@ -45,27 +48,6 @@ def save_recipe_to_db(recipe):
     ''', (str(recipe.id), recipe.name, recipe.category, recipe.difficulty, recipe.time, recipe.ingredients, recipe.steps))
     conn.commit()
     conn.close()
-
-def show_all_recipes():
-    db_name = defs.DATABASE
-    '''Εκτύπωση όλων των συνταγών (για debugging)'''
-    if not os.path.exists(db_name):
-        print(f"Database file '{db_name}' does not exist.")
-        return
-    # Σύνδεση στην βάση
-    conn = sqlite3.connect(db_name)
-    cursor = conn.cursor()
-    cursor.execute('SELECT id, name, category, difficulty FROM recipes') # SELECT όλων των συνταγών
-    recipes = cursor.fetchall()
-    if recipes:
-        print("Recipes in database:")
-        for recipe in recipes:
-            # print(f"ID: {recipe[0]}, Name: {recipe[1]}, Category: {recipe[2]}, Difficulty: {recipe}")
-            print(recipe)
-    else:
-        print("No recipes found.")
-    conn.close()
-
 
 def search_recipe_by_name(recipe_name):
     '''Η συνάρτηση αυτή δεν είναι ακόμη έτοιμη'''
@@ -109,4 +91,29 @@ def delete_recipe_by_id(id):
     cursor = conn.cursor()
     cursor.execute("DELETE FROM recipes WHERE id = ?", (id,))
     conn.commit()
+    conn.close()
+
+
+
+# Debugging functions
+
+def show_all_recipes():
+    '''Συνάρτηση για debugging, δείχνει όλες τις συνταγές που έχουμε αποθηκεύσει'''
+    db_name = defs.DATABASE
+    '''Εκτύπωση όλων των συνταγών (για debugging)'''
+    if not os.path.exists(db_name):
+        print(f"Database file '{db_name}' does not exist.")
+        return
+    # Σύνδεση στην βάση
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+    cursor.execute('SELECT id, name, category, difficulty FROM recipes') # SELECT όλων των συνταγών
+    recipes = cursor.fetchall()
+    if recipes:
+        print("Recipes in database:")
+        for recipe in recipes:
+            # print(f"ID: {recipe[0]}, Name: {recipe[1]}, Category: {recipe[2]}, Difficulty: {recipe}")
+            print(recipe)
+    else:
+        print("No recipes found.")
     conn.close()
