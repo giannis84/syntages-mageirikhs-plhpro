@@ -1,8 +1,8 @@
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
-import window_submit
-
+import window_submit, window_search, window_execute
+import definitions
 
 # Main Function
 def main():
@@ -65,11 +65,11 @@ def main():
 	ttk.Label(frm, text="Submit Recipe").grid(column=0, row=1)
 	ttk.Button(frm, text="Submit",command = lambda: window_submit.create_window_submit(root)).grid(column=1, row=1)
 
-	ttk.Label(frm, text="Modify Recipe").grid(column=0, row=2)
-	ttk.Button(frm, text="Modify",command = create_window_modify).grid(column=1, row=2)
+	ttk.Label(frm, text="Search Recipe").grid(column=0, row=2)
+	ttk.Button(frm, text="Search",command = lambda: window_search.create_window_search(root)).grid(column=1, row=2)
 
 	ttk.Label(frm, text="Execute Recipe").grid(column=0, row=3)
-	ttk.Button(frm, text="Execute",command = create_window_execute).grid(column=1, row=3)
+	ttk.Button(frm, text="Execute",command = lambda: window_execute.create_window_execute(root, definitions.test_steps)).grid(column=1, row=3)
 
 	ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=4)
 

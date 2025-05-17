@@ -1,26 +1,28 @@
 import uuid, sqlite3, os
 import definitions as defs
 
-
+# Κλάση Recipe - ορισμός συνταγής
 class Recipe:
-	def __init__(self, name="", category="", difficulty="", time="", ingredients="", steps=""):
+	def __init__(self, id="", name="", category="", difficulty="", time="", ingredients="", steps=""):
 		'''
 		Παράδειγμα συνταγής:
 		spaghetti_meatballs = Recipe(name="Μακαρόνια με κιμά", category="Ζυμαρικά", difficulty="", time="", ingredients="", steps="")
 		'''
-		self.id = uuid.uuid4() # Μοναδικό πρωτεύον κλειδί για χρήση στην βάση δεδομένων
+		self.id = get_id(id) # Μοναδικό πρωτεύον κλειδί για χρήση στην βάση δεδομένων
 		self.name = name
 		self.category = category
 		self.difficulty = difficulty
 		self.time = time
 		self.ingredients = ingredients
 		self.steps = steps
+          
+def get_id(id):
+     if id == "":
+        id = uuid.uuid4()
+     return id
 
-# import time
-# vhmata = {
-# 	"1": {"vhma": "Vrazoume to nero...", "xronos": time.time()},
-# 	"2": {"vhma": "kimas...", "xronos": time.time()}
-# }
+
+# Κώδικας Βάσης Δεδομένων
 
 def save_recipe_to_db(recipe):
     '''Αποθήκευση συνταγής'''
@@ -47,7 +49,56 @@ def save_recipe_to_db(recipe):
     conn.commit()
     conn.close()
 
+def search_recipe_by_name(recipe_name):
+    '''Η συνάρτηση αυτή δεν είναι ακόμη έτοιμη'''
+    db_name = defs.DATABASE
+    if not os.path.exists(db_name):
+        return [Recipe()]  # Empty recipe if DB doesn't exist
+
+    conn = sqlite3.connect(db_name)
+    cursor = conn.cursor()
+
+    query = '''
+        SELECT id, name, category, difficulty, time, ingredients, steps
+        FROM recipes
+        WHERE name LIKE ?
+    '''
+    search_term = f'%{recipe_name}%'
+    cursor.execute(query, (search_term,))
+    results = cursor.fetchall()
+    print(results)
+    conn.close()
+
+    if results:
+        return [
+            Recipe(
+                id=r[0],
+                name=r[1],
+                category=r[2],
+                difficulty=r[3],
+                time=r[4],
+                ingredients=r[5],
+                steps=r[6]
+            )
+            for r in results
+        ]
+    else:
+        return [Recipe()]  # Return list with one empty recipe
+    
+
+def delete_recipe_by_id(id):
+    conn = sqlite3.connect(defs.DATABASE)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM recipes WHERE id = ?", (id,))
+    conn.commit()
+    conn.close()
+
+
+
+# Debugging functions
+
 def show_all_recipes():
+    '''Συνάρτηση για debugging, δείχνει όλες τις συνταγές που έχουμε αποθηκεύσει'''
     db_name = defs.DATABASE
     '''Εκτύπωση όλων των συνταγών (για debugging)'''
     if not os.path.exists(db_name):
@@ -66,14 +117,3 @@ def show_all_recipes():
     else:
         print("No recipes found.")
     conn.close()
-
-
-def filter_by_category(recipes, category):
-	'''Η συνάρτηση αυτή δεν είναι ακόμη έτοιμη'''
-	# ΠΡΕΠΕΙ ΝΑ ΞΑΝΑΓΡΑΦΤΕΙ ΜΕ SQLITE!!
-	# ΘΑ ΚΑΛΟΥΜΕ ΤΗΝ ΒΑΣΗ ΔΕΔΟΜΕΝΩΝ ΓΙΑ ΝΑ ΒΡΕΙ ΤΙΣ ΣΥΝΓΑΓΕΣ
-	# filtered = []
-	# for i in recipes:
-	# 	if i.category == category:
-	# 		filtered.append(i)
-	# return filtered
