@@ -19,22 +19,22 @@ class ExecuteRecipeWindow:
         self.remaining_time = 0
         self.timer_thread = None
 
-        # Total time
+        # Συνολικός χρόνος
         total_time = self.calculate_total_time()
         tk.Label(master, text=f"Total Estimated Time: {total_time} min").pack(pady=5)
 
-        # List steps
+        # Λίστα βημάτων
         self.step_summary = tk.Listbox(master, width=60)
         for idx, step in enumerate(self.steps):
             summary = f"{idx+1}. {step['description'][:30]}... ({step['time']})"
             self.step_summary.insert(tk.END, summary)
         self.step_summary.pack(pady=5)
 
-        # Current step display
+        # Εκτύπωση βήματος
         self.step_label = tk.Label(master, text="", wraplength=500, justify="left")
         self.step_label.pack(pady=10)
 
-        # Countdown display
+        # Αντίστροφη μέτρηση
         self.timer_label = tk.Label(master, text="", font=("Helvetica", 16))
         self.timer_label.pack(pady=5)
 
