@@ -1,51 +1,128 @@
-from tkinter import *
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import handle_data
 import definitions as defs
+import json
 
 def create_window_submit(parent):
-        '''Συνάρτηση ορισμού του παραθύρου "Submit recipe"'''
+    handle_data.show_all_recipes()
+    ingredients = []
+    steps = []
 
-        handle_data.show_all_recipes() # Για debugging
-        
-        def save_text():
-            '''Εντολή αποθήκευσης σε αντικείμενο της κλάσης Recipe'''
-            names = entry1.get()
-            categories = entry2.get()
-            difficulties = entry3.get()
-            new_recipe = handle_data.Recipe(name=names, category=categories, difficulty=difficulties)
-            handle_data.save_recipe_to_db(new_recipe)
-            print(f"Saved new recipe: {new_recipe.name} in category: {new_recipe.category}, difficulty: {new_recipe.difficulty} and id: {new_recipe.id}.")
-            handle_data.show_all_recipes() # Για debugging
+    def add_ingredient():
+        name = ing_name_entry.get().strip()
+        qty = ing_qty_entry.get().strip()
+        if not name or not qty:
+            messagebox.showwarning("Incomplete", "Please enter both name and quantity.")
+            return
+        ingredients.append({"name": name, "quantity": qty})
+        ing_listbox.insert(tk.END, f"{name} - {qty}")
+        ing_name_entry.delete(0, tk.END)
+        ing_qty_entry.delete(0, tk.END)
 
-        this_window = tk.Toplevel(parent) # Κατασκευή Toplevel widget που έχει ως parent το root widget (κυρίως παράθυρο)
-        this_window.title("Submit recipe details")
-        this_window.geometry("400x200")
-        
-        frame1 = tk.Frame(this_window)
-        frame1.pack(pady=5)
-        label1 = tk.Label(frame1, text="Recipe name:")
-        label1.pack(side=tk.LEFT, padx=8)
-        entry1 = tk.Entry(frame1)
-        entry1.pack(side=tk.RIGHT)
-        
-        frame2 = tk.Frame(this_window)
-        frame2.pack(pady=5)
-        label2 = tk.Label(frame2, text="Category:")
-        label2.pack(side=tk.LEFT, padx=20)
-        entry2 = ttk.Combobox(frame2, values=defs.CATEGORIES)
-        entry2.pack(side=tk.RIGHT)
-        
-        frame3 = tk.Frame(this_window)
-        frame3.pack(pady=5)
-        label3 = tk.Label(frame3, text="Difficulty:")
-        label3.pack(side=tk.LEFT, padx=20)
-        entry3 = ttk.Combobox(frame3, values=defs.DIFFICULTY_OPTIONS)
-        entry3.pack(side=tk.RIGHT)
-        
-        save_button = tk.Button(this_window, text="Save", command=save_text)
-        save_button.pack(pady=15)
-        
-        close_button = tk.Button(this_window, text="Close", command=this_window.destroy)
-        close_button.pack(pady=0)
+    def add_step():
+        desc = step_desc_entry.get().strip()
+        time_val = step_time_entry.get().strip()
+
+        if not desc or not time_val:
+            messagebox.showwarning("Incomplete", "Enter both instruction and time.")
+            return
+        if not time_val.isdigit():
+            messagebox.showerror("Invalid Time", "Step time must be a number (seconds).")
+            return
+
+        steps.append({"description": desc, "time": time_val})
+        step_listbox.insert(tk.END, f"{len(steps)}. {desc[:30]}... ({time_val}s)")
+        step_desc_entry.delete(0, tk.END)
+        step_time_entry.delete(0, tk.END)
+
+    def save_text():
+        names = entry_name.get()
+        categories = entry_category.get()
+        difficulties = entry_difficulty.get()
+
+        if not names:
+            messagebox.showerror("Missing Field", "Recipe name is required.")
+            return
+
+        ingredients_json = json.dumps(ingredients, ensure_ascii=False)
+        steps_json = json.dumps(steps, ensure_ascii=False)
+
+        new_recipe = handle_data.Recipe(
+            name=names,
+            category=categories,
+            difficulty=difficulties,
+            ingredients=ingredients_json,
+            steps=steps_json
+        )
+
+        handle_data.save_recipe_to_db(new_recipe)
+        messagebox.showinfo("Saved", f"Recipe '{names}' saved successfully.")
+        this_window.destroy()
+
+    this_window = tk.Toplevel(parent)
+    this_window.title("Submit Recipe")
+    this_window.geometry("550x700")
+    this_window.resizable(False, False)
+
+    # --- Recipe Info ---
+    recipe_frame = tk.LabelFrame(this_window, text="Recipe Details", padx=10, pady=10)
+    recipe_frame.pack(padx=10, pady=10, fill="x")
+
+    tk.Label(recipe_frame, text="Recipe Name:").grid(row=0, column=0, sticky="e", padx=5, pady=5)
+    entry_name = tk.Entry(recipe_frame, width=40)
+    entry_name.grid(row=0, column=1, padx=5, pady=5)
+
+    tk.Label(recipe_frame, text="Category:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
+    entry_category = ttk.Combobox(recipe_frame, values=defs.CATEGORIES, width=37)
+    entry_category.grid(row=1, column=1, padx=5, pady=5)
+
+    tk.Label(recipe_frame, text="Difficulty:").grid(row=2, column=0, sticky="e", padx=5, pady=5)
+    entry_difficulty = ttk.Combobox(recipe_frame, values=defs.DIFFICULTY_OPTIONS, width=37)
+    entry_difficulty.grid(row=2, column=1, padx=5, pady=5)
+
+    # --- Ingredients ---
+    ing_frame = tk.LabelFrame(this_window, text="Ingredients", padx=10, pady=10)
+    ing_frame.pack(padx=10, pady=10, fill="x")
+
+    tk.Label(ing_frame, text="Ingredient:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
+    ing_name_entry = tk.Entry(ing_frame, width=20)
+    ing_name_entry.grid(row=0, column=1, padx=5, pady=5)
+
+    tk.Label(ing_frame, text="Quantity:").grid(row=0, column=2, padx=5, pady=5, sticky="e")
+    ing_qty_entry = tk.Entry(ing_frame, width=15)
+    ing_qty_entry.grid(row=0, column=3, padx=5, pady=5)
+
+    add_ing_btn = tk.Button(ing_frame, text="Add", command=add_ingredient)
+    add_ing_btn.grid(row=0, column=4, padx=10)
+
+    ing_listbox = tk.Listbox(ing_frame, width=60)
+    ing_listbox.grid(row=1, column=0, columnspan=5, pady=10)
+
+    # --- Execution Steps ---
+    step_frame = tk.LabelFrame(this_window, text="Execution Steps", padx=10, pady=10)
+    step_frame.pack(padx=10, pady=10, fill="x")
+
+    tk.Label(step_frame, text="Step Instruction:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
+    step_desc_entry = tk.Entry(step_frame, width=40)
+    step_desc_entry.grid(row=0, column=1, padx=5, pady=5)
+
+    tk.Label(step_frame, text="Time (sec):").grid(row=0, column=2, padx=5, pady=5, sticky="e")
+    step_time_entry = tk.Entry(step_frame, width=10)
+    step_time_entry.grid(row=0, column=3, padx=5, pady=5)
+
+    add_step_btn = tk.Button(step_frame, text="Add Step", command=add_step)
+    add_step_btn.grid(row=0, column=4, padx=5)
+
+    step_listbox = tk.Listbox(step_frame, width=80)
+    step_listbox.grid(row=1, column=0, columnspan=5, pady=10)
+
+    # --- Action Buttons ---
+    btn_frame = tk.Frame(this_window)
+    btn_frame.pack(pady=10)
+
+    save_button = tk.Button(btn_frame, text="Save", width=15, command=save_text)
+    save_button.grid(row=0, column=0, padx=10)
+
+    close_button = tk.Button(btn_frame, text="Close", width=15, command=this_window.destroy)
+    close_button.grid(row=0, column=1, padx=10)
