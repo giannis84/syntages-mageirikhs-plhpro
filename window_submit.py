@@ -121,8 +121,8 @@ def create_window_submit(parent):
     btn_frame = tk.Frame(this_window)
     btn_frame.pack(pady=10)
 
-    save_button = tk.Button(btn_frame, text="💾 Save", width=15, command=save_text)
+    save_button = tk.Button(btn_frame, text="Save", width=15, command=save_text)
     save_button.grid(row=0, column=0, padx=10)
 
-    close_button = tk.Button(btn_frame, text="❌ Close", width=15, command=this_window.destroy)
+    close_button = tk.Button(btn_frame, text="Close", width=15, command=this_window.destroy)
     close_button.grid(row=0, column=1, padx=10)
