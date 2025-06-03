@@ -10,15 +10,15 @@ def create_window_submit(parent):
     steps = []
 
     def add_ingredient():
-        name = ing_name_entry.get().strip()
-        qty = ing_qty_entry.get().strip()
+        name = ingredient_name_entry.get().strip()
+        qty = ingredient_qty_entry.get().strip()
         if not name or not qty:
             messagebox.showwarning("Incomplete", "Please enter both name and quantity.")
             return
         ingredients.append({"name": name, "quantity": qty})
-        ing_listbox.insert(tk.END, f"{name} - {qty}")
-        ing_name_entry.delete(0, tk.END)
-        ing_qty_entry.delete(0, tk.END)
+        ingredient_listbox.insert(tk.END, f"{name} - {qty}")
+        ingredient_name_entry.delete(0, tk.END)
+        ingredient_qty_entry.delete(0, tk.END)
 
     def add_step():
         desc = step_desc_entry.get().strip()
@@ -65,7 +65,7 @@ def create_window_submit(parent):
     this_window.geometry("550x700")
     this_window.resizable(False, False)
 
-    # --- Recipe Info ---
+    # Recipe Info
     recipe_frame = tk.LabelFrame(this_window, text="Recipe Details", padx=10, pady=10)
     recipe_frame.pack(padx=10, pady=10, fill="x")
 
@@ -81,25 +81,25 @@ def create_window_submit(parent):
     entry_difficulty = ttk.Combobox(recipe_frame, values=defs.DIFFICULTY_OPTIONS, width=37)
     entry_difficulty.grid(row=2, column=1, padx=5, pady=5)
 
-    # --- Ingredients ---
-    ing_frame = tk.LabelFrame(this_window, text="Ingredients", padx=10, pady=10)
-    ing_frame.pack(padx=10, pady=10, fill="x")
+    # Ingredients
+    ingredient_frame = tk.LabelFrame(this_window, text="Ingredients", padx=10, pady=10)
+    ingredient_frame.pack(padx=10, pady=10, fill="x")
 
-    tk.Label(ing_frame, text="Ingredient:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
-    ing_name_entry = tk.Entry(ing_frame, width=20)
-    ing_name_entry.grid(row=0, column=1, padx=5, pady=5)
+    tk.Label(ingredient_frame, text="Ingredient:").grid(row=0, column=0, padx=5, pady=5, sticky="e")
+    ingredient_name_entry = tk.Entry(ingredient_frame, width=20)
+    ingredient_name_entry.grid(row=0, column=1, padx=5, pady=5)
 
-    tk.Label(ing_frame, text="Quantity:").grid(row=0, column=2, padx=5, pady=5, sticky="e")
-    ing_qty_entry = tk.Entry(ing_frame, width=15)
-    ing_qty_entry.grid(row=0, column=3, padx=5, pady=5)
+    tk.Label(ingredient_frame, text="Quantity:").grid(row=0, column=2, padx=5, pady=5, sticky="e")
+    ingredient_qty_entry = tk.Entry(ingredient_frame, width=15)
+    ingredient_qty_entry.grid(row=0, column=3, padx=5, pady=5)
 
-    add_ing_btn = tk.Button(ing_frame, text="Add", command=add_ingredient)
-    add_ing_btn.grid(row=0, column=4, padx=10)
+    add_ingredient_btn = tk.Button(ingredient_frame, text="Add", command=add_ingredient)
+    add_ingredient_btn.grid(row=0, column=4, padx=10)
 
-    ing_listbox = tk.Listbox(ing_frame, width=60)
-    ing_listbox.grid(row=1, column=0, columnspan=5, pady=10)
+    ingredient_listbox = tk.Listbox(ingredient_frame, width=60)
+    ingredient_listbox.grid(row=1, column=0, columnspan=5, pady=10)
 
-    # --- Execution Steps ---
+    # Execution Steps
     step_frame = tk.LabelFrame(this_window, text="Execution Steps", padx=10, pady=10)
     step_frame.pack(padx=10, pady=10, fill="x")
 
@@ -117,7 +117,7 @@ def create_window_submit(parent):
     step_listbox = tk.Listbox(step_frame, width=80)
     step_listbox.grid(row=1, column=0, columnspan=5, pady=10)
 
-    # --- Action Buttons ---
+    # Buttons
     btn_frame = tk.Frame(this_window)
     btn_frame.pack(pady=10)
 
