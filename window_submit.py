@@ -62,7 +62,7 @@ def create_window_submit(parent):
 
     this_window = tk.Toplevel(parent)
     this_window.title("Submit Recipe")
-    this_window.geometry("550x700")
+    this_window.geometry("800x900")
     this_window.resizable(False, False)
 
     # Recipe Info

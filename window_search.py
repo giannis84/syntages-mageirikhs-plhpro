@@ -4,6 +4,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import handle_data
 import definitions as defs
+import window_execute
 
 def create_window_search(parent):
         '''Συνάρτηση ορισμού του παραθύρου "Submit recipe"'''
@@ -86,6 +87,9 @@ def create_window_search(parent):
                     handle_data.delete_recipe_by_id(name) # Σβήσιμο από την βάση δεδομένων
                     tree.delete(tree.selection()[0])  # Σβήσιμο από το treeview
                     messagebox.showinfo("Deleted", f"Recipe '{name}' was deleted.")
+
+            execute_button = tk.Button(button_frame, text="Execute", command=lambda: window_execute.create_window_execute(parent,recipe.steps))
+            execute_button.pack(side=tk.LEFT, padx=10)
 
             modify_button = tk.Button(button_frame, text="Modify", command=modify_selected)
             modify_button.pack(side=tk.LEFT, padx=10)
