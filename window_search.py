@@ -70,8 +70,6 @@ def create_window_search(parent):
             button_frame = tk.Frame(window)
             button_frame.pack(pady=10)
 
-            # TODO ΝΑ ΓΡΑΨΩ ΟΠΩΣΔΗΠΟΤΕ ΚΩΔΙΚΑ ΝΑ ΕΠΙΣΤΡΕΦΕΙ ΤΟ ID ΤΗΣ ΣΥΝΤΑΓΗΣ, ΜΕ ΒΑΣΗ ΑΥΤΟ ΠΡΕΠΕΙ ΝΑ ΤΙΣ ΣΒΗΝΩ Η' ΝΑ ΚΑΝΩ MODIFY!!!!!
-
             def get_selected_recipe_name():
                 selected = tree.selection()
                 if not selected:

@@ -72,10 +72,10 @@ def create_window_submit(parent, previous_recipe=None):
         new_recipe.steps = entered_steps_json
 
         if modify == True:
-            # Pros to paron mono to onoma mporoume na allazoume, exoume dyskolia sto na deixnoume drop-down listes me proepilegmenh timh!!
+            # Οκ, τώρα μένει να αλλάζουν τα υλικά και τα βήματα εκτέλεσης
             # Mia-mia oi epomenes grammes tha fygoun!!!
-            new_recipe.category = previous_recipe.category
-            new_recipe.difficulty = previous_recipe.difficulty
+            # new_recipe.category = previous_recipe.category
+            # new_recipe.difficulty = previous_recipe.difficulty
             new_recipe.ingredients = previous_recipe.ingredients
             new_recipe.steps = previous_recipe.steps
 
@@ -100,11 +100,13 @@ def create_window_submit(parent, previous_recipe=None):
     entry_name.grid(row=0, column=1, padx=5, pady=5)
 
     tk.Label(recipe_frame, text="Category:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
-    entry_category = ttk.Combobox(recipe_frame, values=defs.CATEGORIES, width=37, textvariable=tk.StringVar(value=previous_recipe.category)) # Problem edw!!
+    entry_category = ttk.Combobox(recipe_frame, values=defs.CATEGORIES, width=37) 
+    entry_category.set(previous_recipe.category)
     entry_category.grid(row=1, column=1, padx=5, pady=5)
 
     tk.Label(recipe_frame, text="Difficulty:").grid(row=2, column=0, sticky="e", padx=5, pady=5)
     entry_difficulty = ttk.Combobox(recipe_frame, values=defs.DIFFICULTY_OPTIONS, width=37)
+    entry_difficulty.set(previous_recipe.difficulty)
     entry_difficulty.grid(row=2, column=1, padx=5, pady=5)
 
     # Ingredients
