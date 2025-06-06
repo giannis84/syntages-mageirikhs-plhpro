@@ -46,6 +46,7 @@ def create_window_search(parent):
                 if all(not getattr(recipe, attr) for attr in ["name", "category", "difficulty", "time", "ingredients", "steps"]):
                     continue
 
+                # nice ingredients text!
                 ingredients_text = ""
                 if recipe.ingredients != "":
                     recipe_ingredients_list = json.loads(recipe.ingredients)
@@ -54,15 +55,20 @@ def create_window_search(parent):
                         if i != len(recipe_ingredients_list) - 1:
                             ingredients_text += ", "
 
+                # nice steps text and total time!
                 steps_text = ""
-                time_text = 0
+                time_text = ""
+                total_time = 0
                 if recipe.steps != "":
                     list_of_steps = json.loads(recipe.steps)
                     steps_text = f"{len(list_of_steps)} execution steps"
                     for step in list_of_steps:
-                        time_text += int(step['time'])
+                        total_time += int(step['time'])
+                if total_time != 0:
+                    time_text = str(total_time)
 
-                tree.insert("", tk.END, values=(recipe.name, recipe.category, recipe.difficulty, str(time_text), ingredients_text, steps_text))
+                # Edw ginetai to display!!
+                tree.insert("", tk.END, values=(recipe.name, recipe.category, recipe.difficulty, time_text, ingredients_text, steps_text))
 
             tree.pack(expand=True, fill=tk.BOTH)
 
