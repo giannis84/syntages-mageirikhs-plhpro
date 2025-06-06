@@ -1,5 +1,6 @@
 import uuid, sqlite3, os
-import definitions as defs
+
+DATABASE = "recipes.db"
 
 # Κλάση Recipe - ορισμός συνταγής
 class Recipe:
@@ -27,7 +28,7 @@ def get_id(id):
 def save_recipe_to_db(recipe):
     '''Αποθήκευση συνταγής'''
     # Σύνδεση στην βάση
-    conn = sqlite3.connect(defs.DATABASE)
+    conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     # Αρχικοποίηση TABLE εάν δεν υπάρχει
     cursor.execute('''
@@ -51,11 +52,10 @@ def save_recipe_to_db(recipe):
 
 def search_recipe_by_name(recipe_name):
     '''Η συνάρτηση αυτή δεν είναι ακόμη έτοιμη'''
-    db_name = defs.DATABASE
-    if not os.path.exists(db_name):
+    if not os.path.exists(DATABASE):
         return [Recipe()]  # Empty recipe if DB doesn't exist
 
-    conn = sqlite3.connect(db_name)
+    conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
 
     query = '''
@@ -87,7 +87,7 @@ def search_recipe_by_name(recipe_name):
     
 
 def delete_recipe_by_id(id):
-    conn = sqlite3.connect(defs.DATABASE)
+    conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute("DELETE FROM recipes WHERE id = ?", (id,))
     conn.commit()
@@ -99,13 +99,12 @@ def delete_recipe_by_id(id):
 
 def show_all_recipes():
     '''Συνάρτηση για debugging, δείχνει όλες τις συνταγές που έχουμε αποθηκεύσει'''
-    db_name = defs.DATABASE
     '''Εκτύπωση όλων των συνταγών (για debugging)'''
-    if not os.path.exists(db_name):
-        print(f"Database file '{db_name}' does not exist.")
+    if not os.path.exists(DATABASE):
+        print(f"Database file '{DATABASE}' does not exist.")
         return
     # Σύνδεση στην βάση
-    conn = sqlite3.connect(db_name)
+    conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
     cursor.execute('SELECT id, name, category, difficulty FROM recipes') # SELECT όλων των συνταγών
     recipes = cursor.fetchall()

@@ -1,8 +1,10 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 import handle_data
-import definitions as defs
 import json
+
+CATEGORIES = ["Κρεατικά", "Ζυμαρικά/Ρύζι", "Μαγειρευτά", "Ψάρι/θαλασσινά", "Σαλάτες", "Ορεκτικά", "Έθνικ"]
+DIFFICULTY_OPTIONS = ["Εύκολο", "Μέτριας δυσκολίας", "Δύσκολο"]
 
 def create_window_submit(parent, previous_recipe=None):
 
@@ -100,12 +102,12 @@ def create_window_submit(parent, previous_recipe=None):
     entry_name.grid(row=0, column=1, padx=5, pady=5)
 
     tk.Label(recipe_frame, text="Category:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
-    entry_category = ttk.Combobox(recipe_frame, values=defs.CATEGORIES, width=37) 
+    entry_category = ttk.Combobox(recipe_frame, values=CATEGORIES, width=37) 
     entry_category.set(previous_recipe.category)
     entry_category.grid(row=1, column=1, padx=5, pady=5)
 
     tk.Label(recipe_frame, text="Difficulty:").grid(row=2, column=0, sticky="e", padx=5, pady=5)
-    entry_difficulty = ttk.Combobox(recipe_frame, values=defs.DIFFICULTY_OPTIONS, width=37)
+    entry_difficulty = ttk.Combobox(recipe_frame, values=DIFFICULTY_OPTIONS, width=37)
     entry_difficulty.set(previous_recipe.difficulty)
     entry_difficulty.grid(row=2, column=1, padx=5, pady=5)
 

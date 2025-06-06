@@ -4,7 +4,6 @@ from tkinter import ttk
 from tkinter import messagebox
 import json
 import handle_data
-import definitions as defs
 import window_execute, window_submit
 
 def create_window_search(parent):
@@ -56,9 +55,14 @@ def create_window_search(parent):
                             ingredients_text += ", "
 
                 steps_text = ""
+                time_text = 0
                 if recipe.steps != "":
-                    steps_text = f"{len(json.loads(recipe.steps))} execution steps"
-                tree.insert("", tk.END, values=(recipe.name, recipe.category, recipe.difficulty, recipe.time, ingredients_text, steps_text))
+                    list_of_steps = json.loads(recipe.steps)
+                    steps_text = f"{len(list_of_steps)} execution steps"
+                    for step in list_of_steps:
+                        time_text += int(step['time'])
+
+                tree.insert("", tk.END, values=(recipe.name, recipe.category, recipe.difficulty, str(time_text), ingredients_text, steps_text))
 
             tree.pack(expand=True, fill=tk.BOTH)
 
