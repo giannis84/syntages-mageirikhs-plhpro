@@ -112,6 +112,9 @@ def create_window_search(parent):
             modify_button = tk.Button(button_frame, text="Modify", command=modify_selected)
             modify_button.pack(side=tk.LEFT, padx=10)
 
+            close_button = tk.Button(button_frame, text="Close", command=window.destroy)
+            close_button.pack(side=tk.RIGHT, padx=10)
+
             delete_button = tk.Button(button_frame, text="Delete", command=delete_selected)
             delete_button.pack(side=tk.RIGHT, padx=10)
 
