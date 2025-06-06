@@ -5,12 +5,22 @@ import definitions as defs
 import json
 
 def create_window_submit(parent, previous_recipe=None):
+
+    # Kaloume auto to parathyro gia na metatrepsei mia hdh yparxousa syntagh;
+    # Ean nai, modify = True
     modify = False
+    new_recipe = handle_data.Recipe()
     if previous_recipe == None:
-        previous_recipe=handle_data.Recipe(name="")
+        previous_recipe=handle_data.Recipe()
     else:
+        new_recipe.name = previous_recipe.name
+        new_recipe.category = previous_recipe.category
+        new_recipe.difficulty = previous_recipe.difficulty
+        new_recipe.ingredients = previous_recipe.ingredients
+        new_recipe.steps = previous_recipe.steps
         modify = True
-    handle_data.show_all_recipes()
+
+    handle_data.show_all_recipes() # debug
     ingredients = []
     steps = []
 
@@ -42,28 +52,38 @@ def create_window_submit(parent, previous_recipe=None):
         step_time_entry.delete(0, tk.END)
 
     def save_text():
-        names = entry_name.get()
-        categories = entry_category.get()
-        difficulties = entry_difficulty.get()
+        # Get the values fro the window elements
+        entered_name = entry_name.get()
+        entered_category = entry_category.get()
+        entered_difficulty = entry_difficulty.get()
 
-        if not names:
+        if not entered_name:
             messagebox.showerror("Missing Field", "Recipe name is required.")
             return
 
-        ingredients_json = json.dumps(ingredients, ensure_ascii=False)
-        steps_json = json.dumps(steps, ensure_ascii=False)
+        entrered_ingredients_json = json.dumps(ingredients, ensure_ascii=False)
+        entered_steps_json = json.dumps(steps, ensure_ascii=False)
 
-        new_recipe = handle_data.Recipe(
-            name=names,
-            category=categories,
-            difficulty=difficulties,
-            ingredients=ingredients_json,
-            steps=steps_json
-        )
+        # Define the new recipe to be saved!!
+        new_recipe.name = entered_name
+        new_recipe.category = entered_category
+        new_recipe.difficulty = entered_difficulty
+        new_recipe.ingredients = entrered_ingredients_json
+        new_recipe.steps = entered_steps_json
+
         if modify == True:
-            handle_data.delete_recipe_by_id(previous_recipe.name)
-        handle_data.save_recipe_to_db(new_recipe)  # Den douleuei swsta kai auto to shmeio
-        messagebox.showinfo("Saved", f"Recipe '{names}' saved successfully.")
+            # Pros to paron mono to onoma mporoume na allazoume, exoume dyskolia sto na deixnoume drop-down listes me proepilegmenh timh!!
+            # Mia-mia oi epomenes grammes tha fygoun!!!
+            new_recipe.category = previous_recipe.category
+            new_recipe.difficulty = previous_recipe.difficulty
+            new_recipe.ingredients = previous_recipe.ingredients
+            new_recipe.steps = previous_recipe.steps
+
+            handle_data.delete_recipe_by_id(previous_recipe.id)
+
+
+        handle_data.save_recipe_to_db(new_recipe)
+        messagebox.showinfo("Saved", f"Recipe '{entered_name}' saved successfully.")
         this_window.destroy()
 
     this_window = tk.Toplevel(parent)

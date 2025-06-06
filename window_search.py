@@ -2,6 +2,7 @@ from tkinter import *
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
+import json
 import handle_data
 import definitions as defs
 import window_execute, window_submit
@@ -45,7 +46,19 @@ def create_window_search(parent):
                 # Προσπέρνα τις "άδειες" συνταγές
                 if all(not getattr(recipe, attr) for attr in ["name", "category", "difficulty", "time", "ingredients", "steps"]):
                     continue
-                tree.insert("", tk.END, values=(recipe.name, recipe.category, recipe.difficulty, recipe.time, recipe.ingredients, recipe.steps))
+
+                ingredients_text = ""
+                if recipe.ingredients != "":
+                    recipe_ingredients_list = json.loads(recipe.ingredients)
+                    for i, ingredient in enumerate(recipe_ingredients_list):
+                        ingredients_text += ingredient['name']
+                        if i != len(recipe_ingredients_list) - 1:
+                            ingredients_text += ", "
+
+                steps_text = ""
+                if recipe.steps != "":
+                    steps_text = f"{len(json.loads(recipe.steps))} execution steps"
+                tree.insert("", tk.END, values=(recipe.name, recipe.category, recipe.difficulty, recipe.time, ingredients_text, steps_text))
 
             tree.pack(expand=True, fill=tk.BOTH)
 
@@ -65,22 +78,22 @@ def create_window_search(parent):
                     return None
                 values = tree.item(selected[0])["values"]
                 name = values[0]
-                print(name)
                 return name
-
-            def modify_selected():
-                name = get_selected_recipe_name()
-                if not name:
-                    messagebox.showwarning("No selection", "Please select a recipe to modify.")
-                    return
-                # Να γράψω τον κώδικα για το modify!!!!
-                print(f"Modify: {name}")
+            
+            def get_selected_recipe():
                 selected = tree.selection()
                 if not selected:
                     return None
-                this_recipe = tree.item(selected[0])
-                print(this_recipe)
-                window_submit.create_window_submit(parent, recipes[0])
+                index = tree.index(selected[0])
+                return recipes[index]
+
+            def modify_selected():
+                recipe_to_modify = get_selected_recipe()
+                if not recipe_to_modify:
+                    messagebox.showwarning("No selection", "Please select a recipe to modify.")
+                    return
+                print(f"Modify: {get_selected_recipe_name()}")
+                window_submit.create_window_submit(parent, get_selected_recipe())
 
 
             def delete_selected():
@@ -90,8 +103,8 @@ def create_window_search(parent):
                     return
                 confirm = messagebox.askyesno("Confirm Deletion", f"Delete recipe '{name}'?")
                 if confirm:
-
-                    handle_data.delete_recipe_by_id(name) # Σβήσιμο από την βάση δεδομένων
+                    recipe_to_delete = get_selected_recipe()
+                    handle_data.delete_recipe_by_id(recipe_to_delete.id) # Σβήσιμο από την βάση δεδομένων
                     tree.delete(tree.selection()[0])  # Σβήσιμο από το treeview
                     messagebox.showinfo("Deleted", f"Recipe '{name}' was deleted.")
 
