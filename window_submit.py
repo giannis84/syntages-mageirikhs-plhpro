@@ -83,6 +83,13 @@ def create_window_submit(parent, previous_recipe=None):
 
             handle_data.delete_recipe_by_id(previous_recipe.id)
 
+        if modify == False:
+            searched_existing_recipes_by_name = handle_data.search_recipe_by_name(entered_name)
+            if searched_existing_recipes_by_name[0].name != "":
+                for found_recipe in searched_existing_recipes_by_name:
+                    if found_recipe.name == entered_name:
+                        messagebox.showerror("Invalid name", "A recipe with this name already exists.")
+                        return
 
         handle_data.save_recipe_to_db(new_recipe)
         messagebox.showinfo("Saved", f"Recipe '{entered_name}' saved successfully.")
