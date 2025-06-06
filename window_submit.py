@@ -4,7 +4,12 @@ import handle_data
 import definitions as defs
 import json
 
-def create_window_submit(parent):
+def create_window_submit(parent, previous_recipe=None):
+    modify = False
+    if previous_recipe == None:
+        previous_recipe=handle_data.Recipe(name="")
+    else:
+        modify = True
     handle_data.show_all_recipes()
     ingredients = []
     steps = []
@@ -55,8 +60,9 @@ def create_window_submit(parent):
             ingredients=ingredients_json,
             steps=steps_json
         )
-
-        handle_data.save_recipe_to_db(new_recipe)
+        if modify == True:
+            handle_data.delete_recipe_by_id(previous_recipe.name)
+        handle_data.save_recipe_to_db(new_recipe)  # Den douleuei swsta kai auto to shmeio
         messagebox.showinfo("Saved", f"Recipe '{names}' saved successfully.")
         this_window.destroy()
 
@@ -70,11 +76,11 @@ def create_window_submit(parent):
     recipe_frame.pack(padx=10, pady=10, fill="x")
 
     tk.Label(recipe_frame, text="Recipe Name:").grid(row=0, column=0, sticky="e", padx=5, pady=5)
-    entry_name = tk.Entry(recipe_frame, width=40)
+    entry_name = tk.Entry(recipe_frame, width=40, textvariable=tk.StringVar(value=previous_recipe.name))
     entry_name.grid(row=0, column=1, padx=5, pady=5)
 
     tk.Label(recipe_frame, text="Category:").grid(row=1, column=0, sticky="e", padx=5, pady=5)
-    entry_category = ttk.Combobox(recipe_frame, values=defs.CATEGORIES, width=37)
+    entry_category = ttk.Combobox(recipe_frame, values=defs.CATEGORIES, width=37, textvariable=tk.StringVar(value=previous_recipe.category)) # Problem edw!!
     entry_category.grid(row=1, column=1, padx=5, pady=5)
 
     tk.Label(recipe_frame, text="Difficulty:").grid(row=2, column=0, sticky="e", padx=5, pady=5)

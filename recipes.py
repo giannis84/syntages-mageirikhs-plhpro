@@ -68,9 +68,6 @@ def main():
 	ttk.Label(frm, text="Search Recipe").grid(column=0, row=2)
 	ttk.Button(frm, text="Search",command = lambda: window_search.create_window_search(root)).grid(column=1, row=2)
 
-	ttk.Label(frm, text="Execute Recipe").grid(column=0, row=3)
-	ttk.Button(frm, text="Execute",command = lambda: window_execute.create_window_execute(root, definitions.test_steps)).grid(column=1, row=3)
-
 	ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=4)
 
 

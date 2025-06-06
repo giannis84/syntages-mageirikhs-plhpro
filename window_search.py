@@ -4,7 +4,7 @@ from tkinter import ttk
 from tkinter import messagebox
 import handle_data
 import definitions as defs
-import window_execute
+import window_execute, window_submit
 
 def create_window_search(parent):
         '''Συνάρτηση ορισμού του παραθύρου "Submit recipe"'''
@@ -75,6 +75,13 @@ def create_window_search(parent):
                     return
                 # Να γράψω τον κώδικα για το modify!!!!
                 print(f"Modify: {name}")
+                selected = tree.selection()
+                if not selected:
+                    return None
+                this_recipe = tree.item(selected[0])
+                print(this_recipe)
+                window_submit.create_window_submit(parent, recipes[0])
+
 
             def delete_selected():
                 name = get_selected_recipe_name()
