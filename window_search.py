@@ -14,6 +14,7 @@ def create_window_search(parent):
         def display_recipe():
             '''Έρευνα και επιστροφή αντικειμένου της κλάσης Recipe'''
             name = entry1.get()
+            # ingredient = entry2.get() klp klp
             recipes = handle_data.search_recipe_by_name(name)
             display_recipe_list_window(recipes)
 
@@ -137,11 +138,15 @@ def create_window_search(parent):
         frame1.pack(pady=5)
         label1 = tk.Label(frame1, text="Recipe name:")
         label1.pack(side=tk.LEFT, padx=20)
-        entry1 = tk.Entry(frame1)
+        entry1 = tk.Entry(frame1) # Entry name
         entry1.pack(side=tk.RIGHT)
+        label2 = tk.Label(frame1, text="Recipe ingredient:")
+        label2.pack(side=tk.LEFT, padx=20)
+        entry2 = tk.Entry(frame1) # Entry ingredient
+        entry2.pack(side=tk.RIGHT)
         
-        save_button = tk.Button(this_window, text="Search", command=display_recipe)
-        save_button.pack(pady=15)
+        search_button = tk.Button(this_window, text="Search", command=display_recipe)
+        search_button.pack(pady=15)
         
         close_button = tk.Button(this_window, text="Close", command=this_window.destroy)
         close_button.pack(pady=0)

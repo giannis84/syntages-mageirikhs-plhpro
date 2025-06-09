@@ -12,6 +12,7 @@ def main():
 	frm.grid()
 
 	# Κύριο παράθυρο
+	# Σχετικά με την χρήση lambda: https://www.geeksforgeeks.org/using-lambda-in-gui-programs-in-python/
 
 	ttk.Label(frm, text="Submit Recipe").grid(column=0, row=1)
 	ttk.Button(frm, text="Submit",command = lambda: window_submit.create_window_submit(root)).grid(column=1, row=1)

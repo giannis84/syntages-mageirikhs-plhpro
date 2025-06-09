@@ -61,8 +61,8 @@ def search_recipe_by_name(recipe_name):
     query = '''
         SELECT id, name, category, difficulty, time, ingredients, steps
         FROM recipes
-        WHERE name LIKE ?
-    '''
+        WHERE name LIKE ? 
+    ''' # AND description ....
     search_term = f'%{recipe_name}%'
     cursor.execute(query, (search_term,))
     results = cursor.fetchall()
