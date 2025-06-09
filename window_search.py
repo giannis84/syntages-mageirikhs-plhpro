@@ -140,10 +140,11 @@ def create_window_search(parent):
         label1.pack(side=tk.LEFT, padx=20)
         entry1 = tk.Entry(frame1) # Entry name
         entry1.pack(side=tk.RIGHT)
-        label2 = tk.Label(frame1, text="Recipe ingredient:")
-        label2.pack(side=tk.LEFT, padx=20)
-        entry2 = tk.Entry(frame1) # Entry ingredient
-        entry2.pack(side=tk.RIGHT)
+        
+        # label2 = tk.Label(frame1, text="Recipe ingredient:")
+        # label2.pack(side=tk.LEFT, padx=20)
+        # entry2 = tk.Entry(frame1) # Entry ingredient
+        # entry2.pack(side=tk.RIGHT)
         
         search_button = tk.Button(this_window, text="Search", command=display_recipe)
         search_button.pack(pady=15)
