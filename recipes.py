@@ -1,7 +1,7 @@
 from tkinter import *
 import tkinter as tk
 from tkinter import ttk
-import window_submit, window_search
+import window_submit,window_search,window_search2
 
 # Main Function
 def main():	
@@ -18,7 +18,7 @@ def main():
 	ttk.Button(frm, text="Submit",command = lambda: window_submit.create_window_submit(root)).grid(column=1, row=1)
 
 	ttk.Label(frm, text="Search Recipe").grid(column=0, row=2)
-	ttk.Button(frm, text="Search",command = lambda: window_search.create_window_search(root)).grid(column=1, row=2)
+	ttk.Button(frm, text="Search",command = lambda: window_search2.create_window_search(root)).grid(column=1, row=2)
 
 	ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=4)
 

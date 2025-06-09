@@ -50,7 +50,7 @@ def save_recipe_to_db(recipe):
     conn.commit()
     conn.close()
 
-def search_recipe_by_name(recipe_name):
+def search_recipe_by_name(recipe_name,recipe_category):
     '''Η συνάρτηση αυτή δεν είναι ακόμη έτοιμη'''
     if not os.path.exists(DATABASE):
         return [Recipe()]  # Empty recipe if DB doesn't exist
@@ -61,10 +61,13 @@ def search_recipe_by_name(recipe_name):
     query = '''
         SELECT id, name, category, difficulty, time, ingredients, steps
         FROM recipes
-        WHERE name LIKE ? 
+        WHERE name LIKE ? AND category LIKE ?
     ''' # AND description ....
+
     search_term = f'%{recipe_name}%'
-    cursor.execute(query, (search_term,))
+    search_term1 = f'%{recipe_category}%'
+    cursor.execute(query, (search_term,search_term1))
+
     results = cursor.fetchall()
     print(results)
     conn.close()
