@@ -6,7 +6,7 @@ def create_window_execute(parent, steps_json):
     execute_window = tk.Toplevel(parent)  # Creates a new window on top of the main one
     ExecuteRecipeWindow(execute_window, steps_json)
 
-import threading
+import threading # Εξήγηση: https://www.geeksforgeeks.org/how-to-use-thread-in-tkinter-python/
 
 class ExecuteRecipeWindow:
     def __init__(self, master, steps_json):
