@@ -119,7 +119,7 @@ def create_window_search(parent):
                     messagebox.showinfo("Deleted", f"Recipe '{name}' was deleted.")
 
             
-            execute_button = tk.Button(button_frame, text="Execute", command=lambda: window_execute.create_window_execute(parent,recipe.steps))
+            execute_button = tk.Button(button_frame, text="Execute", command=lambda: window_execute.create_window_execute(parent,get_selected_recipe().steps))
             execute_button.pack(side=tk.LEFT, padx=10)
 
             modify_button = tk.Button(button_frame, text="Modify", command=modify_selected)

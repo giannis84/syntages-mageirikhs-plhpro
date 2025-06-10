@@ -63,7 +63,7 @@ class ExecuteRecipeWindow:
         total = 0
         for step in self.steps:
             try:
-                num = int(''.join(filter(str.isdigit, step['time'])))
+                num = int((step['time']))
                 total += num
             except:
                 pass
@@ -74,7 +74,7 @@ class ExecuteRecipeWindow:
             self.current_index = index
             self.step_label.config(text=self.steps[index]['description'])
             try:
-                self.remaining_time = int(''.join(filter(str.isdigit, self.steps[index]['time'])))
+                self.remaining_time = int(self.steps[index]['time'])
             except:
                 self.remaining_time = 0
             self.update_timer_label()
