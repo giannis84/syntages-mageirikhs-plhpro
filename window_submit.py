@@ -74,7 +74,7 @@ def create_window_submit(parent, previous_recipe=None):
         new_recipe.steps = entered_steps_json
 
         if modify == True:
-            new_recipe.ingredients = previous_recipe.ingredientsσ
+            new_recipe.ingredients = previous_recipe.ingredients
             new_recipe.steps = previous_recipe.steps
 
             handle_data.delete_recipe_by_id(previous_recipe.id)
