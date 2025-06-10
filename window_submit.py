@@ -74,17 +74,13 @@ def create_window_submit(parent, previous_recipe=None):
         new_recipe.steps = entered_steps_json
 
         if modify == True:
-            # Οκ, τώρα μένει να αλλάζουν τα υλικά και τα βήματα εκτέλεσης
-            # Mia-mia oi epomenes grammes tha fygoun!!!
-            # new_recipe.category = previous_recipe.category
-            # new_recipe.difficulty = previous_recipe.difficulty
-            new_recipe.ingredients = previous_recipe.ingredients
+            new_recipe.ingredients = previous_recipe.ingredientsσ
             new_recipe.steps = previous_recipe.steps
 
             handle_data.delete_recipe_by_id(previous_recipe.id)
 
         if modify == False:
-            searched_existing_recipes_by_name = handle_data.search_recipe_by_name(entered_name)
+            searched_existing_recipes_by_name = handle_data.search_recipe_by_name_only(entered_name)
             if searched_existing_recipes_by_name[0].name != "":
                 for found_recipe in searched_existing_recipes_by_name:
                     if found_recipe.name == entered_name:

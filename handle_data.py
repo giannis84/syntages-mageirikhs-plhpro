@@ -50,8 +50,7 @@ def save_recipe_to_db(recipe):
     conn.commit()
     conn.close()
 
-def search_recipe_by_name(recipe_name,recipe_category):
-    '''Η συνάρτηση αυτή δεν είναι ακόμη έτοιμη'''
+def search_recipe_by_name_or_cat(recipe_name,recipe_category):
     if not os.path.exists(DATABASE):
         return [Recipe()]  # Empty recipe if DB doesn't exist
 
@@ -62,12 +61,46 @@ def search_recipe_by_name(recipe_name,recipe_category):
         SELECT id, name, category, difficulty, time, ingredients, steps
         FROM recipes
         WHERE name LIKE ? AND category LIKE ?
-    ''' # AND description ....
-
+    '''
     search_term = f'%{recipe_name}%'
     search_term1 = f'%{recipe_category}%'
     cursor.execute(query, (search_term,search_term1))
 
+    results = cursor.fetchall()
+    print(results)
+    conn.close()
+
+    if results:
+        return [
+            Recipe(
+                id=r[0],
+                name=r[1],
+                category=r[2],
+                difficulty=r[3],
+                time=r[4],
+                ingredients=r[5],
+                steps=r[6]
+            )
+            for r in results
+        ]
+    else:
+        return [Recipe()]  # Return list with one empty recipe
+    
+
+def search_recipe_by_name_only(recipe_name):
+    if not os.path.exists(DATABASE):
+        return [Recipe()]  # Empty recipe if DB doesn't exist
+
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    query = '''
+        SELECT id, name, category, difficulty, time, ingredients, steps
+        FROM recipes
+        WHERE name LIKE ? 
+    '''
+    search_term = f'%{recipe_name}%'
+    cursor.execute(query, (search_term,))
     results = cursor.fetchall()
     print(results)
     conn.close()

@@ -15,7 +15,7 @@ def create_window_search(parent):
             '''Έρευνα και επιστροφή αντικειμένου της κλάσης Recipe'''
             name = entry1.get()
             # ingredient = entry2.get() klp klp
-            recipes = handle_data.search_recipe_by_name(name)
+            recipes = handle_data.search_recipe_by_name_only(name)
             display_recipe_list_window(recipes)
 
         def display_recipe_list_window(recipes):

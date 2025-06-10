@@ -16,7 +16,7 @@ def create_window_search(parent):
             name = entry1.get()
             category = entry2.get()
             # ingredient = entry2.get() klp klp
-            recipes = handle_data.search_recipe_by_name(name,category)
+            recipes = handle_data.search_recipe_by_name_or_cat(name,category)
             display_recipe_list_window(recipes)
 
         def display_recipe_list_window(recipes):
