@@ -2,17 +2,18 @@ import tkinter as tk
 import json
 import time
 
-def create_window_execute(parent, steps_json):
-    execute_window = tk.Toplevel(parent)  # Creates a new window on top of the main one
-    ExecuteRecipeWindow(execute_window, steps_json)
+def create_window_execute(parent, steps_json, ingredients_json):
+    execute_window = tk.Toplevel(parent)  # Κατασκευή Toplevel widget που έχει ως parent το root widget (κυρίως παράθυρο)
+    ExecuteRecipeWindow(execute_window, steps_json, ingredients_json)
 
 import threading # Εξήγηση: https://www.geeksforgeeks.org/how-to-use-thread-in-tkinter-python/
 
 class ExecuteRecipeWindow:
-    def __init__(self, master, steps_json):
+    def __init__(self, master, steps_json, ingredients_json):
         self.master = master
         self.master.title("Execute Recipe")
         self.steps = json.loads(steps_json)
+        self.ingredients = json.loads(ingredients_json)
         self.current_index = 0
         self.timer_running = False
         self.timer_paused = False
@@ -24,11 +25,20 @@ class ExecuteRecipeWindow:
         tk.Label(master, text=f"Total Estimated Time: {total_time} min").pack(pady=5)
 
         # Λίστα βημάτων
+        tk.Label(master, text=f"Execution Steps").pack(pady=5)
         self.step_summary = tk.Listbox(master, width=60)
         for idx, step in enumerate(self.steps):
             summary = f"{idx+1}. {step['description'][:30]}... ({step['time']})"
             self.step_summary.insert(tk.END, summary)
         self.step_summary.pack(pady=5)
+
+        # Λίστα υλικών
+        tk.Label(master, text=f"Ingredients").pack(pady=5)
+        self.ingredient_summary = tk.Listbox(master, width=60)
+        for idx, ingredient in enumerate(self.ingredients):
+            summary = f"{idx+1}. {ingredient['name'][:30]}: ({ingredient['quantity']})"
+            self.ingredient_summary.insert(tk.END, summary)
+        self.ingredient_summary.pack(pady=5)
 
         # Εκτύπωση βήματος
         self.step_label = tk.Label(master, text="", wraplength=500, justify="left")

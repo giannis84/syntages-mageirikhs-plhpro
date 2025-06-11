@@ -15,7 +15,6 @@ def create_window_search(parent):
             '''Έρευνα και επιστροφή αντικειμένου της κλάσης Recipe'''
             name = entry1.get()
             category = entry2.get()
-            # ingredient = entry2.get() klp klp
             recipes = handle_data.search_recipe_by_name_or_cat(name,category)
             display_recipe_list_window(recipes)
 
@@ -53,7 +52,7 @@ def create_window_search(parent):
                 if recipe.ingredients != "":
                     recipe_ingredients_list = json.loads(recipe.ingredients)
                     for i, ingredient in enumerate(recipe_ingredients_list):
-                        ingredients_text += ingredient['name']
+                        ingredients_text += ingredient['name'] + " - " + ingredient['quantity']
                         if i != len(recipe_ingredients_list) - 1:
                             ingredients_text += ", "
 
@@ -119,7 +118,7 @@ def create_window_search(parent):
                     messagebox.showinfo("Deleted", f"Recipe '{name}' was deleted.")
 
             
-            execute_button = tk.Button(button_frame, text="Execute", command=lambda: window_execute.create_window_execute(parent,get_selected_recipe().steps))
+            execute_button = tk.Button(button_frame, text="Execute", command=lambda: window_execute.create_window_execute(parent,get_selected_recipe().steps,get_selected_recipe().ingredients))
             execute_button.pack(side=tk.LEFT, padx=10)
 
             modify_button = tk.Button(button_frame, text="Modify", command=modify_selected)
