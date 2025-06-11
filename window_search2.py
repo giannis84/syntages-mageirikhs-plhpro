@@ -52,7 +52,7 @@ def create_window_search(parent):
                 if recipe.ingredients != "":
                     recipe_ingredients_list = json.loads(recipe.ingredients)
                     for i, ingredient in enumerate(recipe_ingredients_list):
-                        ingredients_text += ingredient['name'] + " - " + ingredient['quantity']
+                        ingredients_text += ingredient['name']
                         if i != len(recipe_ingredients_list) - 1:
                             ingredients_text += ", "
 
